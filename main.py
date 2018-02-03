@@ -8,6 +8,19 @@ try:
 except KeyError:
     old_environ = ""
     
+try:
+    chromepath = os.environ['CHROME']
+except KeyError:
+    chromepath = None
+    
+def Chrome():
+    if chromepath is not None:
+        opts = webdriver.ChromeOptions()
+        opts.binary_location = path(chromepath)
+        return webdriver.Chrome(options = opts)
+    else:
+        return webdriver.Chrome()
+    
 class EasyWebdriver(object):
     
     def __init__(self, webdriver_path = [], firefox_exe = ['firefox', \
@@ -35,15 +48,35 @@ class EasyWebdriver(object):
         #https://stackoverflow.com/questions/1681208/python-platform-independent-way-to-modify-path-environment-variable
         os.environ["PATH"] = old_environ + os.pathsep + \
         os.pathsep.join(self.webdriver_path)
+    
+    def Chrome(self):
+        self._prep()
+        exp = Exception()
+        success = False
+        for c in self.chrome_exe:
+            try:
+                return webdriver.Chrome(c)
+                success = True
+                break
+            except Exception as exp:
+                pass
+        if success == False:
+            return webdriver.Chrome()
+        else:
+            raise(exp)
         
     def Firefox(self):
         self._prep()
+        exp = Exception()
+        success = False
         for f in self.firefox_exe:
             try:
                 return webdriver.Firefox(f)
-            except Exception:
+                success = True
+                break
+            except Exception as exp:
                 pass
-        try:
+        if success == False:
             return webdriver.Firefox()
-        except Exception as we:
-            raise(we)
+        else:
+            raise(exp)
