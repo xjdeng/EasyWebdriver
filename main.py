@@ -1,10 +1,5 @@
 import os
 from selenium import webdriver
-
-try:
-    old_environ = os.environ["PATH"]
-except KeyError:
-    old_environ = ""
     
 try:
     chromepath = os.environ['CHROME']
