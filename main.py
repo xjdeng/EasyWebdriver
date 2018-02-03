@@ -16,17 +16,17 @@ try:
 except KeyError:
     firefoxpath = None
     
-def Chrome(mypath = chromepath):
+def Chrome(*args, mypath = chromepath,  **kwargs):
     if chromepath is not None:
         opts = webdriver.ChromeOptions()
         opts.binary_location = chromepath
-        return webdriver.Chrome(options = opts)
+        return webdriver.Chrome(*args, options = opts, **kwargs)
     else:
-        return webdriver.Chrome()
+        return webdriver.Chrome(*args, **kwargs)
 
-def Firefox(mypath = firefoxpath):
+def Firefox(*args, mypath = firefoxpath, **kwargs):
     if firefoxpath is not None:
-        return webdriver.Firefox(firefox_binary = firefoxpath)
+        return webdriver.Firefox(*args, firefox_binary = firefoxpath, **kwargs)
     else:
-        return webdriver.Firefox()
+        return webdriver.Firefox(*args, **kwargs)
     
