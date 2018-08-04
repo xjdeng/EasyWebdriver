@@ -47,4 +47,8 @@ class webdriver(object):
                   kwargs, e))
         raise(e)
                 
-        
+    def run_noerror(self, methodstr, *args, **kwargs):
+        try:
+            return self.run(methodstr, *args, **kwargs)
+        except common_exceptions:
+            return None
